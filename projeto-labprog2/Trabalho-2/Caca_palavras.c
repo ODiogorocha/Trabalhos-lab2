@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Prototypes das funções
+// Protótipos das funções
 char **alocar_matriz(int colu, int lin);
 void liberar_matriz(char **matriz, int lin);
 void coletar_frase(char **matriz, int lin, int colu);
