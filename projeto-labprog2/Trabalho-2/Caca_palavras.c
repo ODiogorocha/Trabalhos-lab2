@@ -12,70 +12,98 @@
 //##################################################//
 // Funções de entrada
 
-void coletar_frase(char **matriz, int lin, int colu);
 void pede_tam(int* colu, int* lin);
+void coletar_frase(char** matriz, int lin, int colu);
+void coleta_palavra(char* palavra);
 
 //##################################################//
 // Função de saída
 
-void imprimir_matriz(char **matriz, int lin, int colu);
+void imprimir_matriz(char** matriz, int lin, int colu);
 
 //##################################################//
 // Funções alocação dinamica
 
-char **alocar_matriz(int colu, int lin);
-void liberar_matriz(char **matriz, int lin);
+char** alocar_matriz(int colu, int lin);
+void liberar_matriz(char** matriz, int lin);
+char* aloca_palavra();
+void libera_palavra(char* palavra);
 
 //##################################################//
 // Funções de processamento
 
-void buscar_palavra_direcao(char **matriz, int lin, int colu, const char *palavra);
+void buscar_palavra_direcao(char** matriz, int lin, int colu, const char *palavra);
 void completa_com_0(int colu, int lin, char** matriz);
-void preencher_matriz(char **matriz, int lin, int colu, char *vetor);
+void preencher_matriz(char** matriz, int lin, int colu, char *vetor);
+void sistema();
 bool quer_jogar(char palavra[50]);
 
 //##################################################//
 // funções de busca
-bool buscar_horizontal_esquerda_direita(char **matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim);
-bool buscar_horizontal_direita_esquerda(char **matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim);
-bool buscar_vertical_cima_baixo(char **matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim);
-bool buscar_vertical_baixo_cima(char **matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim);
-bool buscar_diagonal_principal_cima_baixo(char **matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim);
-bool buscar_diagonal_principal_baixo_cima(char **matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim);
-bool buscar_diagonal_secundaria_cima_baixo(char **matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim);
-bool buscar_diagonal_secundaria_baixo_cima(char **matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim);
+bool buscar_horizontal_esquerda_direita(char** matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim);
+bool buscar_horizontal_direita_esquerda(char** matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim);
+bool buscar_vertical_cima_baixo(char** matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim);
+bool buscar_vertical_baixo_cima(char** matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim);
+bool buscar_diagonal_principal_cima_baixo(char** matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim);
+bool buscar_diagonal_principal_baixo_cima(char** matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim);
+bool buscar_diagonal_secundaria_cima_baixo(char** matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim);
+bool buscar_diagonal_secundaria_baixo_cima(char** matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim);
 
 //#################################################//
 // Funções
 
 int main() {
+    sistema();
+}
+
+void sistema() {
     int linhas, colunas; // Definindo tamanho da matriz
-    char palavra[50];
+    char* palavra = aloca_palavra();
 
     pede_tam(&colunas, &linhas);
-    char **matriz = alocar_matriz(colunas, linhas);
+    char** matriz = alocar_matriz(colunas, linhas);
     coletar_frase(matriz, linhas, colunas);
-    printf("||Digite *** para parar de jogar.||\n");
+    printf("||Digite*** para parar de jogar.||\n");
     imprimir_matriz(matriz, linhas, colunas);
     
     do{
-        printf("Digite a palavra que deseja buscar: ");
-        fgets(palavra, sizeof(palavra), stdin);
-        size_t len = strlen(palavra);
-        if (len > 0 && palavra[len - 1] == '\n') {
-            palavra[len - 1] = '\0';
-        }
-    
+
+        coleta_palavra(palavra);
         buscar_palavra_direcao(matriz, linhas, colunas, palavra);
+
     } while (quer_jogar(palavra));
     
-
+    libera_palavra(palavra);
     liberar_matriz(matriz, linhas);
-    return 0;
 }
 
-char **alocar_matriz(int colu, int lin) {
-    char **caca_pala;
+void coleta_palavra(char* palavra) {
+
+    printf("Digite a palavra que deseja buscar: ");
+    scanf("%s", palavra);
+    size_t len = strlen(palavra);
+    if (len > 0 && palavra[len - 1] == '\n') {
+        palavra[len - 1] = '\0';
+    }
+    getchar();
+}
+
+char* aloca_palavra() {
+    char* palavra = (char*)malloc(sizeof(char) * 50);
+    if(palavra == NULL){
+        printf("Algo deu errado na alocação das lin.\n");
+        return NULL;
+    }
+
+    return palavra;
+}
+
+void libera_palavra(char* palavra) {
+    free(palavra);
+}
+
+char** alocar_matriz(int colu, int lin) {
+    char** caca_pala;
     caca_pala = (char**)malloc(sizeof(char*) * lin);
     if (caca_pala == NULL) {
         printf("Alocação deu errado.");
@@ -100,14 +128,14 @@ char **alocar_matriz(int colu, int lin) {
     return caca_pala;
 }
 
-void liberar_matriz(char **matriz, int lin) {
+void liberar_matriz(char** matriz, int lin) {
     for (int i = 0; i < lin; i++) {
         free(matriz[i]);
     }
     free(matriz);
 }
 
-void coletar_frase(char **matriz, int lin, int colu) {
+void coletar_frase(char** matriz, int lin, int colu) {
     char *vetor = (char*)malloc(sizeof(char) * (colu * lin) * 2);
     
     printf("Insira a sua frase para virar o caça palavras: ");
@@ -121,7 +149,7 @@ void coletar_frase(char **matriz, int lin, int colu) {
     free(vetor);
 }
 
-void preencher_matriz(char **matriz, int lin, int colu, char *vetor) {
+void preencher_matriz(char** matriz, int lin, int colu, char *vetor) {
     int conta_vetor = 0;
     
     for (int i = 0; i < lin; i++) {
@@ -154,7 +182,7 @@ void completa_com_0(int colu, int lin, char** matriz) {
 
 }
 
-void imprimir_matriz(char **matriz, int lin, int colu) {
+void imprimir_matriz(char** matriz, int lin, int colu) {
     int temporario;
     printf("Matriz:\n");
     for (int i = 0; i < colu; i++){    
@@ -176,15 +204,16 @@ void imprimir_matriz(char **matriz, int lin, int colu) {
         }
         printf("\n");
     }
+    printf("\n");
 }
 
 bool quer_jogar(char palavra[50]) {
     char verifica [4] = "***";
 
-    if (strcmp(palavra, verifica) != 0) {
+    if (strcmp(palavra, verifica) != 0) {;
         return true;
     }
-    printf("!!OBRIGADO POR JOGAR!!");
+    printf("!!OBRIGADO POR JOGAR!!\n\n");
     return false;
 }
 
@@ -196,7 +225,7 @@ void pede_tam(int* colu, int* lin) {
     getchar();
 }
 
-void buscar_palavra_direcao(char **matriz, int lin, int colu, const char *palavra) {
+void buscar_palavra_direcao(char** matriz, int lin, int colu, const char *palavra) {
     int linha_inicio, coluna_inicio, linha_fim, coluna_fim;
     if (buscar_horizontal_esquerda_direita(matriz, lin, colu, palavra, &linha_inicio, &coluna_inicio, &linha_fim, &coluna_fim)) {
         printf("A palavra '%s' ocorre na horizontal esquerda para direita, iniciando na posição [%d, %d] e tenmina na posição [%d, %d].\n", palavra, linha_inicio, coluna_inicio, linha_fim, coluna_fim);
@@ -233,8 +262,13 @@ void buscar_palavra_direcao(char **matriz, int lin, int colu, const char *palavr
     printf("A palavra '%s' não foi encontrada na matriz.\n", palavra);
 }
 
-bool buscar_horizontal_esquerda_direita(char **matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim) {
+bool buscar_horizontal_esquerda_direita(char** matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim) {
     int tamanhoPalavra = strlen(palavra);
+
+    if (tamanhoPalavra > colu) {
+        return false; // A palavra é maior que o número de colunas, impossível encontrar
+    }
+
     for (int i = 0; i < lin; i++) {
         for (int j = 0; j <= colu - tamanhoPalavra; j++) {
             if (strncmp(&matriz[i][j], palavra, tamanhoPalavra) == 0) {
@@ -249,8 +283,12 @@ bool buscar_horizontal_esquerda_direita(char **matriz, int lin, int colu, const 
     return false; // Palavra não encontrada
 }
 
-bool buscar_horizontal_direita_esquerda(char **matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim) {
+bool buscar_horizontal_direita_esquerda(char** matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim) {
     int tamanhoPalavra = strlen(palavra);
+
+    if (tamanhoPalavra > colu) {
+        return false; // A palavra é maior que o número de colunas, impossível encontrar
+    }
 
     for (int i = 0; i < lin; i++) {
         for (int j = colu - 1; j >= tamanhoPalavra - 1; j--) {  // Começa da direita e vai para a esquerda
@@ -278,8 +316,13 @@ bool buscar_horizontal_direita_esquerda(char **matriz, int lin, int colu, const 
     return false; // Palavra não encontrada
 }
 
-bool buscar_vertical_cima_baixo(char **matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim) {
+bool buscar_vertical_cima_baixo(char** matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim) {
     int tamanhoPalavra = strlen(palavra);
+
+    if (tamanhoPalavra > lin) {
+        return false; // A palavra é maior que o número de colunas, impossível encontrar
+    }
+
     for (int j = 0; j < colu; j++) {
         for (int i = 0; i <= lin - tamanhoPalavra; i++) {
             int k;
@@ -300,8 +343,13 @@ bool buscar_vertical_cima_baixo(char **matriz, int lin, int colu, const char *pa
     return false; // Palavra não encontrada
 }
 
-bool buscar_vertical_baixo_cima(char **matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim) {
+bool buscar_vertical_baixo_cima(char** matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim) {
     int tamanhoPalavra = strlen(palavra);
+
+    if (tamanhoPalavra > lin) {
+        return false; // A palavra é maior que o número de colunas, impossível encontrar
+    }
+
     for (int j = 0; j < colu; j++) {
         for (int i = lin - 1; i >= tamanhoPalavra - 1; i--) {
             int k;
@@ -322,8 +370,13 @@ bool buscar_vertical_baixo_cima(char **matriz, int lin, int colu, const char *pa
     return false; // Palavra não encontrada
 }
 
-bool buscar_diagonal_principal_cima_baixo(char **matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim) {
+bool buscar_diagonal_principal_cima_baixo(char** matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim) {
     int tamanhoPalavra = strlen(palavra);
+
+    if (tamanhoPalavra > lin) {
+        return false; // A palavra é maior que o número de colunas, impossível encontrar
+    }
+
     for (int i = 0; i <= lin - tamanhoPalavra; i++) {
         for (int j = 0; j <= colu - tamanhoPalavra; j++) {
             int k;
@@ -344,8 +397,13 @@ bool buscar_diagonal_principal_cima_baixo(char **matriz, int lin, int colu, cons
     return false; // Palavra não encontrada
 }
 
-bool buscar_diagonal_principal_baixo_cima(char **matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim) {
+bool buscar_diagonal_principal_baixo_cima(char** matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim) {
     int tamanhoPalavra = strlen(palavra);
+
+    if (tamanhoPalavra > lin) {
+        return false; // A palavra é maior que o número de colunas, impossível encontrar
+    }
+
     for (int i = lin - 1; i >= tamanhoPalavra - 1; i--) {
         for (int j = colu - 1; j >= tamanhoPalavra - 1; j--) {
             int k;
@@ -366,8 +424,13 @@ bool buscar_diagonal_principal_baixo_cima(char **matriz, int lin, int colu, cons
     return false; // Palavra não encontrada
 }
 
-bool buscar_diagonal_secundaria_cima_baixo(char **matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim) {
+bool buscar_diagonal_secundaria_cima_baixo(char** matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim) {
     int tamanhoPalavra = strlen(palavra);
+
+    if (tamanhoPalavra > lin) {
+        return false; // A palavra é maior que o número de colunas, impossível encontrar
+    }
+
     for (int i = 0; i <= lin - tamanhoPalavra; i++) {
         for (int j = tamanhoPalavra - 1; j < colu; j++) {
             int k;
@@ -388,8 +451,13 @@ bool buscar_diagonal_secundaria_cima_baixo(char **matriz, int lin, int colu, con
     return false; // Palavra não encontrada
 }
 
-bool buscar_diagonal_secundaria_baixo_cima(char **matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim) {
+bool buscar_diagonal_secundaria_baixo_cima(char** matriz, int lin, int colu, const char *palavra, int *linha_ini, int *coluna_ini, int *linha_fim, int *coluna_fim) {
     int tamanhoPalavra = strlen(palavra);
+
+    if (tamanhoPalavra > lin) {
+        return false; // A palavra é maior que o número de colunas, impossível encontrar
+    }
+    
     for (int i = lin - 1; i >= tamanhoPalavra - 1; i--) {
         for (int j = 0; j <= colu - tamanhoPalavra; j++) {
             int k;
