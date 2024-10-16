@@ -31,9 +31,9 @@ Cada pasta representa um trabalho específico, contendo:
 
 ## 📝 Trabalhos
 
-1. **Trabalho 1**: Implementação de um sistema de cadastro utilizando listas encadeadas.
-2. **Trabalho 2**: Desenvolvimento de um algoritmo para ordenação e busca em estruturas de dados.
-3. **Trabalho 3**: Criação de um jogo simples utilizando programação gráfica com a biblioteca Allegro.
+1. **Trabalho 1**: Revisão da matéria Laboratório de Programação 1
+2. **Trabalho 2**: Desenvolvimento de um caça palavras.
+3. **Trabalho 3**: ......
 
 ## 🚀 Como Executar
 
@@ -59,5 +59,4 @@ Para executar os trabalhos, siga as instruções abaixo:
 ## 🛠 Tecnologias Utilizadas
 
 - Linguagem C
-- Biblioteca Allegro (para projetos gráficos)
 - Compilador GCC
