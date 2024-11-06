@@ -22,7 +22,7 @@ O repositório está organizado da seguinte maneira:
 │   └── exemplos/
 ├── 📂 Trabalho4
 │   ├── README.md
-│   ├── codigo_trabalho3.c
+│   ├── codigo_trabalho4.c
 │   └── exemplos/
 └── README.md
 ```
