@@ -4,7 +4,7 @@ Este repositório contém todos os trabalhos realizados para a disciplina de **L
 
 ##Alunos responsaveis:
 - **Weslley**: [GitHub - Weslley](https://github.com/weslley)  
-- **Diogo**: [GitHub - Diogo](https://github.com/ODiogorocha)
+- **Diogo**: [GitHub - Diogo](https://github.com/WeslleyHBM)
 
 
 ## 📁 Estrutura do Repositório
