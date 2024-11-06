@@ -37,7 +37,8 @@ Cada pasta representa um trabalho específico, contendo:
 
 1. **Trabalho 1**: Revisão da matéria Laboratório de Programação 1
 2. **Trabalho 2**: Desenvolvimento de um caça palavras.
-3. **Trabalho 3**: ......
+3. **Trabalho 3**: Registro academico
+4. **Trabalho 3**: Controle de restaurante
 
 ## 🚀 Como Executar
 
