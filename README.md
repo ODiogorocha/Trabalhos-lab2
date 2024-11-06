@@ -3,8 +3,9 @@
 Este repositório contém todos os trabalhos realizados para a disciplina de **Laboratório de Programação II** do curso de **Sistemas de Informação** na **Universidade Federal de Santa Maria (UFSM)**. A disciplina aborda conceitos avançados de programação, desenvolvimento de algoritmos e estruturas de dados.
 
 ##Alunos responsaveis:
-**Weslley**: 
-**Diogo**:
+- **Weslley**: [GitHub - Weslley](https://github.com/weslley)  
+- **Diogo**: [GitHub - Diogo](https://github.com/diogo)
+
 
 ## 📁 Estrutura do Repositório
 
