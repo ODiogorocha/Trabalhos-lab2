@@ -65,7 +65,6 @@ void processarOpcao(int opcao, Aluno **listaAlunos, Projeto **listaProjetos, Pro
             scanf("%d", &projetoCodigo);
             printf("Bolsa mensal: ");
             scanf("%f", &bolsa);
-            // Aqui seria necessário encontrar o aluno e o projeto correspondentes
             break;
         case 8:
             listarVinculos(*listaVinculos);
