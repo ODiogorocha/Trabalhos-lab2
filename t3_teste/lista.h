@@ -1,53 +1,57 @@
-#ifndef LISTAS_H
-#define LISTAS_H
+#ifndef LISTA_H
+#define LISTA_H
 
-// Definições das structs
-typedef struct aluno {
-    int matricula;
-    char nome[100];
-    char telefone[15];
-    struct aluno *prox;
+#include <stdbool.h>
+
+typedef struct Aluno {
+    char nome[50];
+    int codigo;
 } Aluno;
 
-typedef struct projeto {
-    int codigo;
-    char descricao[200];
-    char tipo[20]; 
-    float orcamento_aprovado;
-    float orcamento_atual;
-    struct projeto *prox;
-} Projeto;
+typedef struct Alunos {
+    Aluno aluno;
+    struct Alunos* next;
+} Alunos;
 
-typedef struct professor {
+typedef struct Professor {
+    char nome[50];
     int codigo;
-    char nome[100];
-    char departamento[100];
-    struct professor *prox;
 } Professor;
 
-typedef struct vinculo {
-    Aluno *aluno;
-    Projeto *projeto;
-    float bolsa_mensal;
-    struct vinculo *prox;
-} Vinculo;
+typedef struct Professores {
+    Professor professor;
+    struct Professores* next;
+} Professores;
 
-// Funções de manipulação de listas
-Aluno* criarAluno(int matricula, const char *nome, const char *telefone);
-Projeto* criarProjeto(int codigo, const char *descricao, const char *tipo, float orcamento_aprovado);
-Professor* criarProfessor(int codigo, const char *nome, const char *departamento);
-Vinculo* criarVinculo(Aluno *aluno, Projeto *projeto, float bolsa_mensal);
+typedef struct Projeto {
+    char nome[50];
+    int codigo;
+    Professor* orientador;
+} Projeto;
 
-void cadastrarAluno(Aluno **listaAlunos, int matricula, const char *nome, const char *telefone);
-void listarAlunos(Aluno *listaAlunos);
+typedef struct Projetos {
+    Projeto projeto;
+    struct Projetos* next;
+} Projetos;
 
-void cadastrarProjeto(Projeto **listaProjetos, int codigo, const char *descricao, const char *tipo, float orcamento_aprovado);
-void listarProjetos(Projeto *listaProjetos);
+Alunos* cria_lista_alunos();
+Professores* cria_lista_professores();
+Projetos* cria_lista_projetos();
 
-void cadastrarProfessor(Professor **listaProfessores, int codigo, const char *nome, const char *departamento);
-void listarProfessores(Professor *listaProfessores);
+Alunos* insere_aluno(Alunos* lista);
+Professores* insere_professor(Professores* lista);
+Projetos* insere_projeto(Projetos* lista, Professores* lista_professores);
 
-void vincularAlunoProjeto(Aluno *aluno, Projeto *projeto, float bolsa_mensal, Vinculo **listaVinculos);
-void listarVinculos(Vinculo *listaVinculos);
+void mostra_alunos(Alunos* lista);
+void mostra_professores(Professores* lista);
+void mostra_projetos(Projetos* lista);
 
-#endif 
+bool busca_professor(int codigo, Professores* lista, Professor** orientador);
+
+void excluir_aluno(Alunos** lista);
+void excluir_professor(Professores** lista);
+void excluir_projeto(Projetos** lista);
+void criar_vinculo(Alunos* lista_alunos, Projetos* lista_projetos);
+void excluir_vinculo(Projetos* lista_projetos);
+
+#endif

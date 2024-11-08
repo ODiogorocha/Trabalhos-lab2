@@ -1,7 +1,8 @@
 #ifndef MENU_H
 #define MENU_H
 
-void exibirMenu();
-void processarOpcao(int opcao, Aluno **listaAlunos, Projeto **listaProjetos, Professor **listaProfessores, Vinculo **listaVinculos);
+#include "lista.h"
 
-#endif 
+void menu(int opcao, Alunos** lista_alunos, Professores** lista_professores, Projetos** lista_projetos);  // Declaração da função menu
+
+#endif // MENU_H
