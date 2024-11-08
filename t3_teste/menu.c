@@ -1,4 +1,4 @@
-#include <stdio.h>  // Necessário para printf e scanf
+#include <stdio.h>  
 #include "menu.h"
 #include "lista.h"
 
