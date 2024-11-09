@@ -29,7 +29,7 @@ void menu(int opcao, Alunos** lista_alunos, Professores** lista_professores, Pro
             excluir_vinculo(*lista_projetos);
             break;
         case 9:
-            //relatorio_final(*lista_alunos, *lista_professores, *lista_projetos);  // Esta função deve ser declarada ou definida
+            //relatorio_final(*lista_alunos, *lista_professores, *lista_projetos);  
             break;
         case 0:
             printf("Saindo...\n");
