@@ -118,6 +118,24 @@ void excluir_projeto(Projetos** lista) {
 }
 
 // funcao criar vinculo dos alunos e projetos 
-void criar_vnculo(Alunos* lista_alunos, Projetos* lista_projetos) {
-    
+void criar_vinculo(Alunos* lista_alunos, Projetos* lista_projetos) {
+    int codigo_aluno;
+    int codigo_projeto;
+    Alunos* aluno = NULL;
+    Projetos* projeto = NULL;
+
+    prntf("Digite o codigo do aluno: \n");
+    scanf("%d", &codigo_aluno);
+    printf("Digite o codigo do projeto: \n");
+    scanf("%d", &codigo_projeto);
+
+    //buscar aluno e projeto
+    aluno = busca_alunos(codigo_aluno, lista_alunos);
+    projeto = busca_projeto(codigo_projeto, lista_projetos);
+
+    if (aluno && projeto) {
+        printf("Vinculo criado com sucesso entre aluno e projeto.\n");
+    } else if (projeto == false) {
+        printf("Projetos ")
+    }
 }
