@@ -41,3 +41,4 @@ void imprimir_fila(Fila *fila) {
         printf("Grupo %d: %d pessoas\n", fila->grupos[index].senha, fila->grupos[index].numero_pessoas);
     }
 }
+

@@ -28,7 +28,7 @@ void imprimir_mesa(Mesa **mesas, int linhas, int colunas) {
         for (int j = 0; j < colunas; j++) {
             printf("Mesa %d: %s, %d pessoas, comanda %d\n",
             mesas[i][j].numero_mesa,
-            mesas[i][j].ocupada ? "Ocupada" : "Livre",
+            mesas[i][j].ocupada ? "Ocupada" : "Livre", // ? simplificacao de um if else condição ? valor_se_verdadeiro : valor_se_falso;
             mesas[i][j].numero_pessoas,
             mesas[i][j].comanda);
         }
