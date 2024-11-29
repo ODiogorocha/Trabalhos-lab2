@@ -4,20 +4,18 @@
 typedef struct {
     int senha;
     int numero_pessoas;
-}Grupo;
+} Grupo;
 
-typedef struct {
-    Grupo *grupos;
-    //sei que poderia ir tudo em uma unica linha mas acho que fica visualmente melhor separado
-    int inicio;
-    int fim;
-    int tamanho;
-    int capacidade;
-}Fila;
+typedef struct Fila {
+    Grupo grupo;
+    struct Fila *inicio;
+    struct Fila *proximo;
+} Fila;
 
-Fila inicia_fila(int capacidade);
-void adiconar_grupo(Fila *fila, int numero_pessoas);
-Grupo remover_grupo(Fila *fila);
-void imprimir_fila(Fila *fila);
+Fila* inicia_fila();
+void adicionar_grupo(Fila **inicio, int numero_pessoas);
+Grupo remover_grupo(Fila **inicio);
+void imprimir_fila(Fila *inicio);
+void destruir_fila(Fila **inicio);
 
 #endif
