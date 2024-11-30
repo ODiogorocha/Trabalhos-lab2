@@ -57,7 +57,7 @@ int main() {
 
             case 3:
                 if (mesas != NULL) {
-                    // Lógica para liberar mesa e reposicionar clientes da fila (detalhes omitidos)
+                    // Lógica para liberar mesa e reposicionar clientes da fila 
                     printf("Mesa liberada e reposição de clientes da fila realizada.\n");
                 } else {
                     printf("Restaurante ainda não foi aberto.\n");
