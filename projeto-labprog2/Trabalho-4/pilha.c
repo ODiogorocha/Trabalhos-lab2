@@ -1,31 +1,68 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "pilha.h"
 
-Pilha* inicia_pilha(int capacidade){
-    Pilha *pilha = (Pilha*)malloc(sizeof(Pilha));
-    pilha->pratos = (int*)malloc(capacidade * sizeof(int));
-    pilha->topo = -1;
-    pilha->capacidade= capacidade;
+// Função para inicializar a pilha
+Pilha* inicializar_pilha() {
+    Pilha* pilha = (Pilha*)malloc(sizeof(Pilha));
+    if (pilha == NULL) {
+        printf("Erro ao alocar memória para a pilha de pratos.\n");
+        exit(1);
+    }
+    pilha->topo = NULL;
+    pilha->tamanho = 0;
     return pilha;
 }
 
-void empilhar(Pilha *pilha, int pratos) {
-    if (pilha->topo == pilha->capacidade - 1) {
-        printf("Pilha cheai!\n");
-        return;
+// Função para empilhar um prato
+void empilhar_prato(Pilha* pilha, int prato_id) {
+    NoPilha* novo = (NoPilha*)malloc(sizeof(NoPilha));
+    if (novo == NULL) {
+        printf("Erro ao alocar memória para o nó da pilha.\n");
+        exit(1);
     }
-    pilha->pratos[++pilha->topo] = pratos;
+    novo->prato_id = prato_id;
+    novo->proximo = pilha->topo;
+    pilha->topo = novo;
+    pilha->tamanho++;
 }
 
-int desempilhar(Pilha *pilha) {
-    if (pilha->topo == -1){
-        printf("Pilha vazia!\n");
-        return -1;
+// Função para desempilhar um prato
+int desempilhar_prato(Pilha* pilha) {
+    if (pilha->topo == NULL) {
+        printf("Pilha de pratos vazia.\n");
+        return -1; // Código de erro
     }
-    return pilha->pratos[pilha->topo--];
+
+    NoPilha* temp = pilha->topo;
+    int prato_id = temp->prato_id;
+    pilha->topo = temp->proximo;
+    free(temp);
+    pilha->tamanho--;
+    return prato_id;
 }
 
-void imprimir_pilha(Pilha *pilha) {
-    printf("Pilha de pratos: %d pratos \n", pilha->topo + 1);
+// Função para verificar se a pilha está vazia
+bool pilha_vazia(Pilha* pilha) {
+    return pilha->topo == NULL;
+}
+
+// Função para imprimir o estado da pilha
+void imprimir_pilha(Pilha* pilha) {
+    NoPilha* atual = pilha->topo;
+    printf("Pilha de pratos (topo para base):\n");
+    while (atual != NULL) {
+        printf("Prato ID: %d\n", atual->prato_id);
+        atual = atual->proximo;
+    }
+    printf("Total de pratos na pilha: %d\n", pilha->tamanho);
+}
+
+// Função para liberar a memória da pilha
+void destruir_pilha(Pilha* pilha) {
+    while (!pilha_vazia(pilha)) {
+        desempilhar_prato(pilha);
+    }
+    free(pilha);
 }
