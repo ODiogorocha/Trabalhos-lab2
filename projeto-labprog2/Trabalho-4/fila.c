@@ -78,3 +78,61 @@ void destruir_fila(Fila* fila) {
     }
     free(fila);
 }
+
+// Função para verificar e separar 4 pessoas do grupo, alocando em uma mesa
+void alocar_grupo_em_mesa(Fila* fila) {
+    if (fila_vazia(fila)) {
+        printf("Fila de espera vazia. Nenhum grupo para alocar.\n");
+        return;
+    }
+
+    Grupo* atual = fila->inicio;
+    while (atual != NULL) {
+        if (atual->quantidade_pessoas > 4) {
+            // Se o grupo tiver mais de 4 pessoas, aloca 4 pessoas em uma mesa
+            printf("Grupo com senha %d tem mais de 4 pessoas. Alocando 4 pessoas em uma mesa.\n", atual->senha);
+            atual->quantidade_pessoas -= 4;
+            // O grupo com mais de 4 pessoas permanece na fila com a quantidade reduzida
+            return;
+        }
+        atual = atual->proximo;
+    }
+    printf("Nenhum grupo com mais de 4 pessoas encontrado.\n");
+}
+
+// Função para remover um grupo da fila com base na senha
+void sair_da_fila(Fila* fila, int senha) {
+    if (fila_vazia(fila)) {
+        printf("Fila de espera vazia. Nenhum grupo para remover.\n");
+        return;
+    }
+
+    Grupo* atual = fila->inicio;
+    Grupo* anterior = NULL;
+
+    while (atual != NULL) {
+        if (atual->senha == senha) {
+            // Encontrou o grupo com a senha correspondente
+            if (anterior == NULL) {
+                // O grupo a ser removido é o primeiro da fila
+                fila->inicio = atual->proximo;
+                if (fila->inicio == NULL) {
+                    fila->fim = NULL;
+                }
+            } else {
+                // O grupo a ser removido está no meio ou no final da fila
+                anterior->proximo = atual->proximo;
+                if (atual == fila->fim) {
+                    fila->fim = anterior;
+                }
+            }
+            fila->tamanho--;
+            free(atual);
+            printf("Grupo com senha %d removido da fila.\n", senha);
+            return;
+        }
+        anterior = atual;
+        atual = atual->proximo;
+    }
+    printf("Grupo com senha %d não encontrado na fila.\n", senha);
+}
