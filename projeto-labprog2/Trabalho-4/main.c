@@ -1,3 +1,8 @@
+//codigo para compilar
+//gcc main.c restaurante.c fila.c pilha.c -o restaurante -I.
+//./restaurante
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "restaurante.h"
