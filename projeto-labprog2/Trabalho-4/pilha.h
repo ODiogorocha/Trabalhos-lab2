@@ -22,4 +22,4 @@ bool pilha_vazia(Pilha* pilha);
 void imprimir_pilha(Pilha* pilha);
 void destruir_pilha(Pilha* pilha);
 
-#endif // PILHA_H
+#endif 
