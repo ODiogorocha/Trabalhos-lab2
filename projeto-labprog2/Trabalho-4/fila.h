@@ -1,27 +1,27 @@
 #ifndef FILA_H
 #define FILA_H
 
-#include <stdbool.h>
+typedef struct grupo Grupo;
+typedef struct fila Fila;
 
-// Estrutura para representar um grupo na fila
-typedef struct Grupo {
+struct grupo {
     int senha;
-    int quantidade_pessoas;
-    struct Grupo* proximo;
-} Grupo;
+    int numero_pessoas;
+};
 
-typedef struct {
-    Grupo* inicio;
-    Grupo* fim;
-    int tamanho;
-} Fila;
+struct fila {
+    Grupo grupo;
+    Fila *inicio;
+    Fila *proximo;
+};
 
-// Funções para gerenciamento da fila
-Fila* inicializar_fila();
-void enfileirar_grupo(Fila* fila, int senha, int quantidade_pessoas);
-Grupo* desenfileirar_grupo(Fila* fila);
-bool fila_vazia(Fila* fila);
-void imprimir_fila(Fila* fila);
-void destruir_fila(Fila* fila);
+Fila* inicia_fila();
+void enfileirar_grupo(Fila **inicio, int senha, int numero_pessoas);
+Grupo* remover_grupo(Fila **inicio);
+void imprimir_fila(Fila *inicio);
+void destruir_fila(Fila **inicio);
+bool fila_vazia(Fila* filaEspera);
+void desistir(Fila** filaEspera, int senha);
 
-#endif 
+
+#endif
