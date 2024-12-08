@@ -3,136 +3,108 @@
 #include <stdbool.h>
 #include "fila.h"
 
-// Função para inicializar a fila
-Fila* inicializar_fila() {
-    Fila* fila = (Fila*)malloc(sizeof(Fila));
-    if (fila == NULL) {
-        printf("Erro ao alocar memória para a fila de grupos.\n");
-        exit(1);
-    }
-    fila->inicio = NULL;
-    fila->fim = NULL;
-    fila->tamanho = 0;
-    return fila;
+// Função para iniciar uma fila vazia
+Fila* inicia_fila() {
+    return NULL; 
 }
 
-// Função para enfileirar um grupo
-void enfileirar_grupo(Fila* fila, int senha, int quantidade_pessoas) {
-    Grupo* novo = (Grupo*)malloc(sizeof(Grupo));
-    if (novo == NULL) {
-        printf("Erro ao alocar memória para o grupo na fila.\n");
+// Função para adicionar um grupo na fila
+void enfileirar_grupo(Fila **inicio, int senha, int numero_pessoas) {
+
+    // Cria um novo nó da fila
+    Fila *novo = (Fila *)malloc(sizeof(Fila));
+    if (!novo) {
+        printf("Erro ao alocar memória para o novo grupo.\n");
         exit(1);
     }
-    novo->senha = senha;
-    novo->quantidade_pessoas = quantidade_pessoas;
+
+    novo->grupo.numero_pessoas = numero_pessoas;
+    novo->grupo.senha = senha;
     novo->proximo = NULL;
 
-    if (fila->fim != NULL) {
-        fila->fim->proximo = novo;
+    // Insere o novo nó no final da fila
+    if (*inicio == NULL) {
+        *inicio = novo; 
+    } else {
+        Fila *temp = *inicio;
+        while (temp->proximo != NULL) {
+            temp = temp->proximo;
+        }
+        temp->proximo = novo;
     }
-    fila->fim = novo;
-
-    if (fila->inicio == NULL) {
-        fila->inicio = novo;
-    }
-    fila->tamanho++;
 }
 
-// Função para desenfileirar um grupo
-Grupo* desenfileirar_grupo(Fila* fila) {
-    if (fila_vazia(fila)) {
-        printf("Fila de espera vazia.\n");
+// Função para remover o primeiro grupo da fila
+Grupo* remover_grupo(Fila **inicio) {
+    if (*inicio == NULL) {
+        printf("Fila vazia!\n");
         return NULL;
     }
 
-    Grupo* removido = fila->inicio;
-    fila->inicio = removido->proximo;
-    if (fila->inicio == NULL) {
-        fila->fim = NULL;
-    }
-    fila->tamanho--;
-    return removido;
-}
-
-// Função para verificar se a fila está vazia
-bool fila_vazia(Fila* fila) {
-    return fila->inicio == NULL;
-}
-
-// Função para imprimir o estado da fila
-void imprimir_fila(Fila* fila) {
-    Grupo* atual = fila->inicio;
-    printf("Fila de espera (senha e quantidade de pessoas):\n");
-    while (atual != NULL) {
-        printf("Senha: %d, Pessoas: %d\n", atual->senha, atual->quantidade_pessoas);
-        atual = atual->proximo;
-    }
-    printf("Total de grupos na fila: %d\n", fila->tamanho);
-}
-
-// Função para liberar a memória da fila
-void destruir_fila(Fila* fila) {
-    while (!fila_vazia(fila)) {
-        Grupo* temp = desenfileirar_grupo(fila);
+    Fila *temp = *inicio;
+    Grupo* grupo_removido = (Grupo*)malloc(sizeof(Grupo));
+    if (temp->grupo.numero_pessoas > 4) {
+        grupo_removido->numero_pessoas = 4;
+        grupo_removido->senha = temp->grupo.senha;
+        temp->grupo.numero_pessoas -= 4;
+    } else {
+        *inicio = temp->proximo;
+        *grupo_removido = temp->grupo;
         free(temp);
     }
-    free(fila);
+    return grupo_removido;
 }
 
-// Função para verificar e separar 4 pessoas do grupo, alocando em uma mesa
-void alocar_grupo_em_mesa(Fila* fila) {
-    if (fila_vazia(fila)) {
-        printf("Fila de espera vazia. Nenhum grupo para alocar.\n");
+bool fila_vazia(Fila* filaEspera) {
+    if (filaEspera == NULL) {
+        return true;
+    }
+    return false;
+}
+
+// Função para imprimir os grupos na fila
+void imprimir_fila(Fila *inicio) {
+    if (inicio == NULL) {
+        printf("Fila está vazia.\n");
         return;
     }
 
-    Grupo* atual = fila->inicio;
-    while (atual != NULL) {
-        if (atual->quantidade_pessoas > 4) {
-            // Se o grupo tiver mais de 4 pessoas, aloca 4 pessoas em uma mesa
-            printf("Grupo com senha %d tem mais de 4 pessoas. Alocando 4 pessoas em uma mesa.\n", atual->senha);
-            atual->quantidade_pessoas -= 4;
-            // O grupo com mais de 4 pessoas permanece na fila com a quantidade reduzida
-            return;
-        }
-        atual = atual->proximo;
+    printf("Fila de espera:\n");
+    Fila *temp = inicio;
+    while (temp != NULL) {
+        printf("Grupo %d: %d pessoas\n",temp->grupo.senha, temp->grupo.numero_pessoas);
+        temp = temp->proximo;
     }
-    printf("Nenhum grupo com mais de 4 pessoas encontrado.\n");
 }
 
-// Função para remover um grupo da fila com base na senha
-void sair_da_fila(Fila* fila, int senha) {
-    if (fila_vazia(fila)) {
-        printf("Fila de espera vazia. Nenhum grupo para remover.\n");
-        return;
-    }
+void desistir(Fila** filaEspera, int senha) {
+    
+    Fila* temp = *filaEspera;
+    Fila* anterior = NULL;
 
-    Grupo* atual = fila->inicio;
-    Grupo* anterior = NULL;
-
-    while (atual != NULL) {
-        if (atual->senha == senha) {
-            // Encontrou o grupo com a senha correspondente
-            if (anterior == NULL) {
-                // O grupo a ser removido é o primeiro da fila
-                fila->inicio = atual->proximo;
-                if (fila->inicio == NULL) {
-                    fila->fim = NULL;
-                }
+    while (temp != NULL) {
+        if (temp->grupo.senha == senha) {
+            if (anterior == NULL) {  // O nó a remover é o primeiro
+                *filaEspera = temp->proximo;
             } else {
-                // O grupo a ser removido está no meio ou no final da fila
-                anterior->proximo = atual->proximo;
-                if (atual == fila->fim) {
-                    fila->fim = anterior;
-                }
+                anterior->proximo = temp->proximo;
             }
-            fila->tamanho--;
-            free(atual);
-            printf("Grupo com senha %d removido da fila.\n", senha);
+            free(temp);
+            printf("Grupo com senha %d saiu da fila.\n", senha);
             return;
         }
-        anterior = atual;
-        atual = atual->proximo;
+        anterior = temp;
+        temp = temp->proximo;
     }
+
     printf("Grupo com senha %d não encontrado na fila.\n", senha);
+}
+
+// Função para destruir a fila e liberar memória
+void destruir_fila(Fila **inicio) {
+    while (*inicio != NULL) {
+        Fila *temp = *inicio;
+        *inicio = (*inicio)->proximo;
+        free(temp);
+    }
 }
