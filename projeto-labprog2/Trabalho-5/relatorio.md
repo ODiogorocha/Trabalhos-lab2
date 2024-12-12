@@ -3,25 +3,32 @@
 ## Introdução
 
 O problema do caminho mínimo em grafos consiste em encontrar a rota mais curta entre dois vértices de um grafo, considerando que as arestas possuem pesos que podem representar distância, custo ou tempo. Este problema possui ampla aplicação em diversas áreas, como redes de transporte, comunicação e logística.
+Existem várias variantes para problemas de caminho mínimo, cada uma adequada a um conjunto de problemas diferente:
+- Problema de único destino: consiste em determinar o menor caminho entre cada um dos nós do grafo e um nó de destino dado.
+- Problema de único origem: determinar o menor caminho entre um nó dado e todos os demais nós do grafo.
+- Problema de origem-destino: determinar o menor caminho entre nós dados.
+- Problemas de todos os pares: determinar o menor caminho entre cada par de nós presentes no grafo.
 
 ## Principais Algoritmos
 
 ### Algoritmo de Dijkstra
 
 O algoritmo de Dijkstra é um método guloso que encontra o caminho mais curto de um vértice fonte para todos os outros vértices de um grafo com pesos não negativos.
+O método original utiliza de uma matriz de pesos, onde o valor registrado é infinto quando não há arestas conectando dois vértices diretamente, e caso contrário, é o peso da dita aresta. No caso implementado, são usados dois vetores, um para manter registro dos vértices já visitados do grafo, enquanto o outro corresponde ao peso efetivo (total) para ir de uma vértice ao outro.
 
 **Etapas principais:**
 1. Inicialização das distâncias como infinito, exceto a distância do vértice fonte, que é zero.
-2. Iterativamente, seleciona-se o vértice de menor distância ainda não visitado.
+2. A cada iteração, seleciona-se o vértice de menor distância ainda não visitado.
 3. Atualiza-se as distâncias dos vértices vizinhos, caso encontre um caminho mais curto.
+4. O algoritmo termina quando todas os vértices foram visitados.
 
 ### Algoritmo de Bellman-Ford
 
-O algoritmo de Bellman-Ford resolve o problema do caminho mínimo em grafos que podem conter arestas com pesos negativos.
+O algoritmo de Bellman-Ford resolve o problema do caminho mínimo em grafos que podem conter arestas com pesos negativos. O algoritmo também é capaz de identificar ciclos negativos, que são úteis em alguns casos.
 
 **Etapas principais:**
 1. Inicialização das distâncias como infinito, exceto a distância do vértice fonte, que é zero.
-2. Relaxação de todas as arestas do grafo por |V| - 1 iterações.
+2. Relaxação de todas as arestas do grafo por |V| - 1 iterações. Relaxar uma aresta significa tentar melhorar a distância conhecida de um vértice a partir de outro.
 3. Verificação de ciclos negativos: se, após |V| - 1 iterações, alguma aresta puder ser relaxada, o grafo possui um ciclo negativo.
 
 ## Implementações
